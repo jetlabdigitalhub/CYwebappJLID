@@ -4,7 +4,8 @@
   "description": "Personal academic dashboard with Express, EJS, and SQLite.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "node -e \"console.log('No build step required for this Express app')\""
   },
   "engines": {
     "node": ">=18"

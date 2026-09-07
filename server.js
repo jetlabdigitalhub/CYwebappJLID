@@ -11,6 +11,7 @@ const notesRoutes = require("./routes/notes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || "0.0.0.0";
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -48,8 +49,12 @@ app.use((error, req, res, next) => {
 
 initializeDatabase()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Academic Dashboard berjalan di port ${PORT}`);
+    const server = app.listen(PORT, HOST, () => {
+      console.log(`Academic Dashboard berjalan di http://${HOST}:${PORT}`);
+    });
+    server.on("error", (error) => {
+      console.error("Server gagal dijalankan:", error);
+      process.exit(1);
     });
   })
   .catch((error) => {
