@@ -1,0 +1,28 @@
+<%- include("partials/head", { pageTitle }) %>
+<section class="page-heading">
+  <div>
+    <p class="eyebrow">Perkuliahan</p>
+    <h1>Jadwal Kuliah</h1>
+    <p class="muted">Jadwal kuliah MTBI IAIN CURUP.</p>
+  </div>
+</section>
+
+<section class="panel schedule-panel">
+  <div class="schedule-table-wrap">
+    <table class="schedule-table">
+      <thead><tr><th>Hari</th><th>Jam</th><th>Mata Kuliah</th><th>Dosen</th><th>Ruang</th></tr></thead>
+      <tbody>
+        <% groupedSchedule.forEach((group) => { %>
+          <% group.items.forEach((item, index) => { %>
+            <tr class="<%= group.day === todayName ? 'is-today' : '' %>">
+              <% if (index === 0) { %><td class="day-cell" rowspan="<%= group.items.length %>"><span><%= group.day %></span><% if (group.day === todayName) { %><small>Hari ini</small><% } %></td><% } %>
+              <td class="time-cell"><%= item.time %></td><td><strong><%= item.subject %></strong></td><td><%= item.lecturer %></td><td><%= item.room %></td>
+            </tr>
+          <% }) %>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <p class="table-note">Jadwal dapat diubah melalui <strong>config/schedule.js</strong>.</p>
+</section>
+<%- include("partials/footer") %>

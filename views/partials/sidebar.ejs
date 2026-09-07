@@ -1,0 +1,25 @@
+<aside class="sidebar" data-sidebar>
+  <a class="brand" href="/">
+    <span class="brand-mark">CY</span>
+    <span>Catatan<br>Yongki</span>
+  </a>
+  <p class="nav-label">Workspace</p>
+  <nav class="main-nav" aria-label="Navigasi utama">
+    <a class="nav-item <%= pageTitle === 'Dashboard' ? 'is-active' : '' %>" href="/">
+      <span class="nav-icon">⌂</span> Dashboard
+    </a>
+    <a class="nav-item <%= pageTitle === 'Jadwal' ? 'is-active' : '' %>" href="/jadwal">
+      <span class="nav-icon">▦</span> Jadwal
+    </a>
+    <a class="nav-item <%= ['Tugas', 'Tambah Tugas', 'Edit Tugas'].includes(pageTitle) ? 'is-active' : '' %>" href="/tugas">
+      <span class="nav-icon">✓</span> Tugas
+    </a>
+    <a class="nav-item <%= pageTitle === 'Catatan Saya' ? 'is-active' : '' %>" href="/catatan">
+      <span class="nav-icon">▤</span> Catatan
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <span class="status-dot"></span>
+    <span>Ruang kerja pribadi</span>
+  </div>
+</aside>

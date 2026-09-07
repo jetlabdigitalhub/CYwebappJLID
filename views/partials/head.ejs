@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Personal academic dashboard untuk mengelola jadwal, tugas, dan catatan kuliah.">
+  <title><%= pageTitle %> | Catatan Yongki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <%- include("sidebar") %>
+    <main class="main-content">
+      <header class="mobile-header">
+        <a class="brand brand-mobile" href="/">
+          <span class="brand-mark">CY</span>
+          <span>Catatan<br>Yongki</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Buka menu" aria-expanded="false" data-menu-toggle>Menu</button>
+      </header>

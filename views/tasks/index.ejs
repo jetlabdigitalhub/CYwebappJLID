@@ -1,0 +1,11 @@
+<%- include("../partials/head", { pageTitle }) %>
+<section class="page-heading tasks-heading">
+  <div><p class="eyebrow">Pekerjaan kuliah</p><h1>Tugas</h1><p class="muted">Catat hal-hal yang perlu diselesaikan, tanpa membuatnya rumit.</p></div>
+  <a class="button button-primary" href="/tugas/tambah"><span aria-hidden="true">＋</span> Tambah Tugas</a>
+</section>
+<% if (message) { %><div class="flash-message" role="status"><span>✓</span> <%= message %></div><% } %>
+<section class="panel tasks-panel">
+  <div class="filter-bar" aria-label="Filter tugas"><span class="filter-label">Tampilkan</span><a class="filter-link <%= filter === 'all' ? 'is-active' : '' %>" href="/tugas">Semua</a><a class="filter-link <%= filter === 'pending' ? 'is-active' : '' %>" href="/tugas?status=pending">Belum selesai</a><a class="filter-link <%= filter === 'completed' ? 'is-active' : '' %>" href="/tugas?status=completed">Selesai</a></div>
+  <% if (tasks.length) { %><div class="full-task-list"><% tasks.forEach((item) => { %><article class="full-task-row <%= item.status === 'completed' ? 'is-completed' : '' %>"><form action="/tugas/<%= item.id %>/toggle" method="post"><button class="check-button" type="submit" aria-label="Ubah status tugas"><%= item.status === 'completed' ? '✓' : '' %></button></form><div class="full-task-copy"><span class="task-subject"><%= item.subject %></span><h2><%= item.task %></h2><span class="deadline">Deadline <%= formatDate(item.deadline) %></span></div><div class="task-actions"><a class="icon-link" href="/tugas/<%= item.id %>/edit">Edit</a><form action="/tugas/<%= item.id %>/delete" method="post" data-confirm-delete><button class="icon-link danger-link" type="submit">Hapus</button></form></div></article><% }) %></div><% } else { %><div class="empty-state"><span class="empty-icon">✓</span><h2>Belum ada tugas di filter ini</h2><p>Tambahkan tugas baru untuk mulai mencatat pekerjaanmu.</p></div><% } %>
+</section>
+<%- include("../partials/footer") %>

@@ -1,0 +1,82 @@
+<%- include("partials/head", { pageTitle }) %>
+<section class="page-heading dashboard-heading">
+  <div>
+    <p class="eyebrow">Dihosting melalui Jetlab.Id</p>
+    <h1>CATATAN YONGKI</h1>
+    <p class="muted">Silahkan dibuka dan dimanfaatkan infonya.</p>
+  </div>
+  <div class="date-display">
+    <span class="date-icon">◷</span>
+    <div>
+      <span class="date-label">Hari ini</span>
+      <strong><%= today.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) %></strong>
+    </div>
+  </div>
+</section>
+
+<section class="dashboard-grid">
+  <div class="dashboard-main-column">
+    <article class="panel schedule-preview">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Agenda</p>
+          <h2>Jadwal Hari Ini</h2>
+        </div>
+        <a class="text-link" href="/jadwal">Lihat semua <span aria-hidden="true">→</span></a>
+      </div>
+      <% if (todaySchedule.length) { %>
+        <div class="today-list">
+          <% todaySchedule.forEach((item) => { %>
+            <div class="today-item">
+              <div class="time-block"><%= item.time %></div>
+              <div class="schedule-detail">
+                <strong><%= item.subject %></strong>
+                <span><%= item.lecturer %> · <%= item.room %></span>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="empty-state compact"><span class="empty-icon">☼</span><p>Tidak ada jadwal kuliah hari ini.</p></div>
+      <% } %>
+    </article>
+
+    <article class="panel task-preview">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Prioritas</p>
+          <h2>Tugas Tercatat</h2>
+        </div>
+        <a class="text-link" href="/tugas">Kelola tugas <span aria-hidden="true">→</span></a>
+      </div>
+      <% if (tasks.length) { %>
+        <div class="task-list">
+          <% tasks.forEach((item) => { %>
+            <div class="task-row <%= item.status === 'completed' ? 'is-completed' : '' %>">
+              <span class="task-check"><%= item.status === 'completed' ? '✓' : '' %></span>
+              <div class="task-copy"><strong><%= item.task %></strong><span><%= item.subject %></span></div>
+              <time><%= formatDate(item.deadline) %></time>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="empty-state compact"><p>Belum ada tugas tercatat.</p></div>
+      <% } %>
+    </article>
+  </div>
+
+  <aside class="dashboard-side-column">
+    <article class="accent-panel">
+      <span class="accent-kicker">Catatan</span>
+      <h2>Jaga ide-ide penting tetap dekat.</h2>
+      <p>Akses cepat ke semua catatan kuliah dan penelitianmu.</p>
+      <a class="button button-light" href="/catatan">Buka Catatan <span aria-hidden="true">↗</span></a>
+    </article>
+    <article class="panel quick-panel">
+      <div class="panel-heading"><div><p class="eyebrow">Akses cepat</p><h2>Informasi</h2></div></div>
+      <p class="muted">Data jadwal dan tautan catatan bisa diedit langsung dari folder konfigurasi project.</p>
+      <a class="text-link" href="/jadwal">Buka jadwal <span aria-hidden="true">→</span></a>
+    </article>
+  </aside>
+</section>
+<%- include("partials/footer") %>

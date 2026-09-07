@@ -1,0 +1,19 @@
+<%- include("partials/head", { pageTitle }) %>
+<section class="page-heading">
+  <div>
+    <p class="eyebrow">Referensi</p>
+    <h1>Catatan Saya</h1>
+    <p class="muted">Catatan dokumen penting buat kuliah.</p>
+  </div>
+</section>
+<section class="notes-grid">
+  <% notes.forEach((note) => { %>
+    <article class="note-card">
+      <div class="note-symbol">↗</div>
+      <div><h2><%= note.title %></h2><p><%= note.description %></p></div>
+      <a class="button button-primary" href="<%= note.url %>" target="_blank" rel="noopener noreferrer">Buka Catatan <span aria-hidden="true">↗</span></a>
+    </article>
+  <% }) %>
+</section>
+<p class="section-note">Tautan dapat diubah melalui <strong>config/notes.js</strong>.</p>
+<%- include("partials/footer") %>

@@ -1,0 +1,7 @@
+<%- include("../partials/head", { pageTitle }) %>
+<section class="page-heading form-heading"><div><p class="eyebrow">Pekerjaan kuliah</p><h1><%= formTitle %></h1><p class="muted">Simpan detail tugas agar mudah ditemukan kembali.</p></div><a class="text-link" href="/tugas">← Kembali ke tugas</a></section>
+<section class="panel form-panel">
+  <% if (error) { %><div class="form-error" role="alert"><span>!</span> <%= error %></div><% } %>
+  <form action="<%= formAction %>" method="post" class="task-form"><label for="subject">Mata Kuliah<input id="subject" name="subject" type="text" maxlength="120" value="<%= task.subject %>" required></label><label for="task">Tugas<textarea id="task" name="task" rows="4" maxlength="500" required><%= task.task %></textarea></label><div class="form-row"><label for="deadline">Deadline<input id="deadline" name="deadline" type="date" value="<%= task.deadline %>" required></label><label for="status">Status<select id="status" name="status"><option value="pending" <%= task.status === 'pending' ? 'selected' : '' %>>Belum selesai</option><option value="completed" <%= task.status === 'completed' ? 'selected' : '' %>>Selesai</option></select></label></div><div class="form-actions"><a class="button button-quiet" href="/tugas">Batal</a><button class="button button-primary" type="submit">Simpan Tugas</button></div></form>
+</section>
+<%- include("../partials/footer") %>
