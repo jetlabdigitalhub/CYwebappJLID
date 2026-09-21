@@ -122,6 +122,13 @@ function wait(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
+function searchUrl(query, page) {
+  const url = new URL(SINTA_URL);
+  url.searchParams.set("q", query);
+  if (page > 1) url.searchParams.set("page", String(page));
+  return url.toString();
+}
+
 async function fetchPage(url, delay) {
   let lastError;
   for (let attempt = 0; attempt < MAX_RETRIES; attempt += 1) {
@@ -186,19 +193,13 @@ async function scrapeQueries(options, onProgress) {
   for (let queryIndex = 0; queryIndex < queries.length; queryIndex += 1) {
     const query = queries[queryIndex];
     try {
-      const firstUrl = new URL(SINTA_URL);
-      firstUrl.searchParams.set("page", "1");
-      firstUrl.searchParams.set("q", query);
-      const firstPage = parsePage(await fetchPage(firstUrl.toString(), 0));
+      const firstPage = parsePage(await fetchPage(searchUrl(query, 1), 0));
       const totalPages = mode === "test" ? 1 : mode === "custom" ? Math.min(customPages, firstPage.totalPages) : firstPage.totalPages;
       const pages = [firstPage];
       onProgress({ query, queryIndex, totalQueries: queries.length, page: 1, totalPages, rawRecords, status: "Scraping..." });
 
       for (let page = 2; page <= totalPages; page += 1) {
-        const pageUrl = new URL(SINTA_URL);
-        pageUrl.searchParams.set("page", String(page));
-        pageUrl.searchParams.set("q", query);
-        pages.push(parsePage(await fetchPage(pageUrl.toString(), delay)));
+        pages.push(parsePage(await fetchPage(searchUrl(query, page), delay)));
         onProgress({ query, queryIndex, totalQueries: queries.length, page, totalPages, rawRecords, status: "Scraping..." });
       }
 
