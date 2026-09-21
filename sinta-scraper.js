@@ -130,10 +130,19 @@ async function fetchPage(url, delay) {
     try {
       const response = await fetch(url, {
         signal: controller.signal,
-        headers: { "User-Agent": "Catatan-Yongki-SINTA-Scraper/1.0" }
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36",
+          Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9",
+          Referer: SINTA_URL
+        }
       });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      return await response.text();
+      const html = await response.text();
+      if (!/text\/html/i.test(response.headers.get("content-type") || "") || !/<html[\s>]/i.test(html)) {
+        throw new Error("Respons SINTA bukan HTML yang valid");
+      }
+      return html;
     } catch (error) {
       lastError = error.name === "AbortError" ? new Error("Request timeout setelah 30 detik") : error;
       if (attempt < MAX_RETRIES - 1) await wait(500 * (2 ** attempt));
