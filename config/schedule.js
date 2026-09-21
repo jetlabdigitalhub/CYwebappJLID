@@ -1,6 +1,6 @@
 // Edit data jadwal di file ini.
 const schedule = [
-  {
+    {
     day: "Sabtu",
     time: "07.40 - 11.10",
     subject: "ICT",

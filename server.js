@@ -5,6 +5,7 @@ const express = require("express");
 const helmet = require("helmet");
 const { initializeDatabase } = require("./database/db");
 const dashboardRoutes = require("./routes/dashboard");
+const sintaRoutes = require("./routes/sinta");
 const scheduleRoutes = require("./routes/schedule");
 const taskRoutes = require("./routes/tasks");
 const notesRoutes = require("./routes/notes");
@@ -17,6 +18,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.urlencoded({ extended: false, limit: "20kb" }));
+app.use(express.json({ limit: "200kb" }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.locals.formatDate = (value) => {
@@ -30,6 +32,7 @@ app.locals.formatDate = (value) => {
 };
 
 app.use(dashboardRoutes);
+app.use(sintaRoutes);
 app.use(scheduleRoutes);
 app.use(taskRoutes);
 app.use(notesRoutes);

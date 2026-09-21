@@ -1,4 +1,4 @@
-// Ganti URL berikut dengan link Google Drive atau Google Docs Anda.
+// Ganti URL dummy berikut dengan link Google Docs Anda.
 const notes = [
   {
     title: "Perpus Saya 2026",
