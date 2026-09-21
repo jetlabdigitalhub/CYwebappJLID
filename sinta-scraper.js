@@ -1,4 +1,5 @@
 const cheerio = require("cheerio");
+const https = require("https");
 
 const SINTA_URL = "https://sinta.kemdiktisaintek.go.id/journals/";
 const REQUEST_TIMEOUT = 30000;
@@ -128,15 +129,17 @@ async function fetchPage(url, delay) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
     try {
-      const response = await fetch(url, {
+      const requestHeaders = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36",
+        Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        Referer: SINTA_URL
+      };
+      let response = await fetch(url, {
         signal: controller.signal,
-        headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36",
-          Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-          "Accept-Language": "en-US,en;q=0.9",
-          Referer: SINTA_URL
-        }
+        headers: requestHeaders
       });
+      if (response.status === 403) response = await requestWithHttps(url, requestHeaders);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const html = await response.text();
       if (!/text\/html/i.test(response.headers.get("content-type") || "") || !/<html[\s>]/i.test(html)) {
@@ -151,6 +154,24 @@ async function fetchPage(url, delay) {
     }
   }
   throw lastError;
+}
+
+function requestWithHttps(url, headers) {
+  return new Promise((resolve, reject) => {
+    const request = https.get(url, { headers }, (response) => {
+      let body = "";
+      response.setEncoding("utf8");
+      response.on("data", (chunk) => { body += chunk; });
+      response.on("end", () => resolve({
+        ok: response.statusCode >= 200 && response.statusCode < 300,
+        status: response.statusCode,
+        headers: { get: (name) => response.headers[name.toLowerCase()] || "" },
+        text: async () => body
+      }));
+    });
+    request.setTimeout(REQUEST_TIMEOUT, () => request.destroy(new Error("Request timeout setelah 30 detik")));
+    request.on("error", reject);
+  });
 }
 
 async function scrapeQueries(options, onProgress) {
